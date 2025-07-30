@@ -1,0 +1,16 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export async function addPatient({ name, age, id_number, notes }) {
+  const { data, error } = await supabase.from("patients").insert([{ name, age, id_number, notes }])
+  return { data, error }
+}
+
+export async function getPatients() {
+  const { data, error } = await supabase.from("patients").select("*").order("created_at", { ascending: false })
+  return { data, error }
+}
